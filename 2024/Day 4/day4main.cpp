@@ -6,12 +6,8 @@ using namespace std;
 int main()
 {
     ifstream dataFile("input.dat"); 
-
-    if (!dataFile.is_open())
-    {
-        cout << "File not opened.";
-        return 0;
-    }
+    bool open = validateOpen(dataFile);
+    if (!open) {cout << "File unable to be opened."; return 0;}
 
     // Part 1 Solution
     cout << "The answer to Part 1 is: " << endl;
@@ -24,4 +20,13 @@ int main()
 
     dataFile.close();
     return 0;
+}
+
+bool validateOpen (ifstream file)
+{
+    if (!file.is_open())
+    {
+        return false;
+    }
+    return true;
 }
