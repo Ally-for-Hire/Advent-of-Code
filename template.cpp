@@ -17,22 +17,6 @@ int main()
 
     // Part 1 Solution
     // ---------------------------------------------------------------------------//
-    string wholefile;
-    int length = 0;
-
-    while (getline(dataFile, line))
-    {
-        if (length == 0) { length = line.length(); }
-        wholefile += line;
-    }
-    
-    for (int i = 0; i < wholefile.length(); i++)
-    {
-        if (i % length == 0 && i > 0) { cout << endl; }
-        cout << wholefile[i];
-    }
-    cout << endl;
-    
     cout << "The answer to Part 1 is: " << endl;
     // ---------------------------------------------------------------------------//
     
