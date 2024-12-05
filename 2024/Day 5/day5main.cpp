@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <sstream>
 using namespace std;
 
 bool validateOpen (ifstream &file);
@@ -8,18 +9,36 @@ bool validateOpen (ifstream &file);
 int main()
 {
     // File Validation
-    ifstream rules("test1"); 
-    bool open = validateOpen(rules);
+    ifstream ruleFile("test1"); 
+    bool open = validateOpen(ruleFile);
     if (!open) { cout << "File unable to be opened."; return 0; }
     ifstream dataFile("test2"); 
-    bool open = validateOpen(dataFile);
+    open = validateOpen(dataFile);
     if (!open) { cout << "File unable to be opened."; return 0; }
 
     // Global Variables
-    string line;
+    string line, rule;
 
     // Part 1 Solution
     // ---------------------------------------------------------------------------//
+    // plan: test every case against every rule MANUALLY
+    while (getline(dataFile, line))
+    {
+        while (getline(ruleFile, rule))
+        {
+            istringstream ruleStream (rule);
+            string beforeStr, afterStr;
+
+            getline(ruleStream, beforeStr, '|');
+            getline(ruleStream, afterStr, '|');
+
+            int before = stoi(beforeStr);
+            int after = stoi(afterStr);
+
+            cout << before << " | " << after << endl;
+        }
+    }
+
     cout << "The answer to Part 1 is: " << endl;
     // ---------------------------------------------------------------------------//
     
