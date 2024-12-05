@@ -8,7 +8,10 @@ bool validateOpen (ifstream &file);
 int main()
 {
     // File Validation
-    ifstream dataFile("test"); 
+    ifstream rules("test1"); 
+    bool open = validateOpen(rules);
+    if (!open) { cout << "File unable to be opened."; return 0; }
+    ifstream dataFile("test2"); 
     bool open = validateOpen(dataFile);
     if (!open) { cout << "File unable to be opened."; return 0; }
 
