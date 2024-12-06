@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <vector>
 using namespace std;
 
 bool validateOpen (ifstream &file);
@@ -9,10 +10,10 @@ bool validateOpen (ifstream &file);
 int main()
 {
     // File Validation
-    ifstream ruleFile("test1"); 
+    ifstream ruleFile("input1"); 
     bool open = validateOpen(ruleFile);
     if (!open) { cout << "File unable to be opened."; return 0; }
-    ifstream dataFile("test2"); 
+    ifstream dataFile("input2"); 
     open = validateOpen(dataFile);
     if (!open) { cout << "File unable to be opened."; return 0; }
 
@@ -22,24 +23,54 @@ int main()
     // Part 1 Solution
     // ---------------------------------------------------------------------------//
     // plan: test every case against every rule MANUALLY
-    while (getline(dataFile, line))
+    int validRules = 0;
+
+    while (getline(dataFile, line)) // For every line
     {
-        while (getline(ruleFile, rule))
+        bool followsRules = true;
+        vector<int> fullLine;
+
+        while (getline(ruleFile, rule) && followsRules) // For every rule
         {
             istringstream ruleStream (rule);
-            string beforeStr, afterStr;
-
+            istringstream dataStream (line);
+            string beforeStr, afterStr, numberStr;
+            
             getline(ruleStream, beforeStr, '|');
             getline(ruleStream, afterStr, '|');
 
             int before = stoi(beforeStr);
             int after = stoi(afterStr);
 
-            cout << before << " | " << after << endl;
+            int indbefore = -1, indafter = -1, index = 0;
+            bool generatefullLine = fullLine.size() == 0;
+
+            while (getline(dataStream, numberStr, ','))
+            {   
+                index++;
+
+                if (generatefullLine) { fullLine.push_back(stoi(numberStr)); }
+
+                if (stoi(numberStr) == before) { indbefore = index; }
+                else if (stoi(numberStr) == after) { indafter = index; }
+            }
+
+            if (indafter < indbefore && (indbefore != -1 && indafter != -1))
+            {
+                followsRules = false;
+            }
         }
+
+        if (followsRules) 
+        { 
+            validRules += fullLine[fullLine.size() / 2]; 
+        }
+
+        ruleFile.clear();
+        ruleFile.seekg(0, ios::beg);
     }
 
-    cout << "The answer to Part 1 is: " << endl;
+    cout << "The answer to Part 1 is: " << validRules << endl;
     // ---------------------------------------------------------------------------//
     
     dataFile.clear();
